@@ -237,9 +237,6 @@
   margin-top: 8px;
 }
 
-/* ---------- Price + add / stepper ----------
-   Tinggi area ini selalu tetap, jadi kartu tidak "loncat"
-   saat produk ditambahkan ke cart. */
 .buy {
   margin-top: auto;
   padding-top: 14px;
