@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/PaymentSuccess.module.css";
+import styles from "../../styles/PaymentSuccess.module.css";
 
 export default function PaymentSuccess() {
   const [status, setStatus] = useState("CHECKING");
