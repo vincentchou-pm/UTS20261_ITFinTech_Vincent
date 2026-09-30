@@ -14,15 +14,21 @@ export default async function handler(req, res) {
 
     const { event, data } = req.body;
 
-    // Kita hanya proses payment session yang berhasil
+    // Hanya proses payment session yang completed
     if (event === "payment_session.completed") {
       const checkoutId = data.reference_id;
-      const paymentSessionId = data.payment_session_id;
-      const paymentId = data.payment_id;
+      const paymentSessionId = data.id;
 
       console.log("Checkout ID:", checkoutId);
       console.log("Payment Session ID:", paymentSessionId);
-      console.log("Payment ID:", paymentId);
+      console.log("Status:", data.status);
+
+      if (!checkoutId) {
+        return res.status(400).json({
+          success: false,
+          message: "reference_id is missing",
+        });
+      }
 
       const client = await clientPromise;
       const db = client.db("it-app");
@@ -30,17 +36,30 @@ export default async function handler(req, res) {
       const checkoutCollection = db.collection("checkouts");
       const paymentCollection = db.collection("payments");
 
+      // Cari checkout berdasarkan reference_id
+      const checkout = await checkoutCollection.findOne({
+        _id: new ObjectId(checkoutId),
+      });
+
+      if (!checkout) {
+        console.error("Checkout not found:", checkoutId);
+
+        return res.status(404).json({
+          success: false,
+          message: "Checkout not found",
+        });
+      }
+
       // Update payment
       await paymentCollection.updateOne(
         {
-          checkoutId: new ObjectId(checkoutId),
+          checkoutId: checkout._id,
         },
         {
           $set: {
             status: "LUNAS",
-            xenditStatus: "COMPLETED",
+            xenditStatus: data.status,
             xenditPaymentSessionId: paymentSessionId,
-            xenditPaymentId: paymentId,
             paidAt: new Date(),
             updatedAt: new Date(),
           },
@@ -50,7 +69,7 @@ export default async function handler(req, res) {
       // Update checkout
       await checkoutCollection.updateOne(
         {
-          _id: new ObjectId(checkoutId),
+          _id: checkout._id,
         },
         {
           $set: {
@@ -68,7 +87,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Kalau event bukan completed
     console.log("Unhandled Xendit event:", event);
 
     return res.status(200).json({
