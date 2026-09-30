@@ -9,12 +9,33 @@ export default async function handler(req, res) {
   }
 
   try {
+    // =========================
+    // VERIFY XENDIT WEBHOOK
+    // =========================
+
+    const callbackToken = req.headers["x-callback-token"];
+
+    if (
+      !process.env.XENDIT_WEBHOOK_TOKEN ||
+      callbackToken !== process.env.XENDIT_WEBHOOK_TOKEN
+    ) {
+      console.error("Invalid Xendit webhook token");
+
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
     console.log("===== XENDIT WEBHOOK RECEIVED =====");
     console.log("Webhook body:", req.body);
 
     const { event, data } = req.body;
 
-    // Hanya proses payment session yang completed
+    // =========================
+    // PAYMENT SESSION COMPLETED
+    // =========================
+
     if (event === "payment_session.completed") {
       const checkoutId = data.reference_id;
       const paymentSessionId = data.id;
@@ -30,13 +51,26 @@ export default async function handler(req, res) {
         });
       }
 
+      if (!ObjectId.isValid(checkoutId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid checkout ID",
+        });
+      }
+
+      if (data.status !== "COMPLETED") {
+        return res.status(200).json({
+          success: true,
+          message: "Payment is not completed",
+        });
+      }
+
       const client = await clientPromise;
       const db = client.db("it-app");
 
       const checkoutCollection = db.collection("checkouts");
       const paymentCollection = db.collection("payments");
 
-      // Cari checkout berdasarkan reference_id
       const checkout = await checkoutCollection.findOne({
         _id: new ObjectId(checkoutId),
       });

@@ -85,6 +85,14 @@ export default async function handler(req, res) {
         currency: "IDR",
     }));
 
+    const appUrl = process.env.APP_URL;
+
+    if (!appUrl) {
+    return res.status(500).json({
+        message: "APP_URL is not configured",
+    });
+    }
+
     // Buat Payment Session Xendit
     const xenditResponse = await fetch(
       "https://api.xendit.co/sessions",
@@ -103,15 +111,19 @@ export default async function handler(req, res) {
             ).toString("base64"),
         },
         body: JSON.stringify({
-          reference_id: checkoutId,
-          session_type: "PAY",
-          mode: "PAYMENT_LINK",
-          amount: checkout.total,
-          currency: "IDR",
-          country: "ID",
-          locale: "id",
-          description: `Payment for checkout ${checkoutId}`,
-          items: items,
+        reference_id: checkoutId,
+        session_type: "PAY",
+        mode: "PAYMENT_LINK",
+        amount: checkout.total,
+        currency: "IDR",
+        country: "ID",
+        locale: "id",
+        description: `Payment for checkout ${checkoutId}`,
+
+        success_return_url: `${appUrl}/payment/success?checkoutId=${checkoutId}`,
+        cancel_return_url: `${appUrl}/payment/cancel?checkoutId=${checkoutId}`,
+
+        items: items,
         }),
       }
     );
