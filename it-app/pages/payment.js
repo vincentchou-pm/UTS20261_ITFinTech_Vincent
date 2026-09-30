@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "../styles/Payment.module.css";
 
 export default function Payment() {
   const [checkoutId, setCheckoutId] = useState(null);
@@ -15,7 +16,6 @@ export default function Payment() {
     }
 
     setCheckoutId(savedCheckoutId);
-
     createPayment(savedCheckoutId);
   }, []);
 
@@ -55,65 +55,104 @@ export default function Payment() {
   };
 
   if (loading) {
-    return <p>Creating payment...</p>;
+    return (
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <div className={styles.spinner}></div>
+          <h1 className={styles.title}>Preparing Payment</h1>
+          <p className={styles.description}>
+            Please wait while we prepare your payment.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   if (!checkoutId) {
     return (
-      <div style={{ padding: "40px" }}>
-        <h1>Payment</h1>
-        <p>Checkout tidak ditemukan.</p>
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <div className={styles.iconCircle}>!</div>
+
+          <h1 className={styles.title}>Checkout Not Found</h1>
+
+          <p className={styles.description}>
+            We couldn't find your checkout session.
+          </p>
+        </div>
       </div>
     );
   }
 
   if (!payment) {
     return (
-      <div style={{ padding: "40px" }}>
-        <h1>Payment</h1>
-        <p>Failed to create payment.</p>
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <div className={styles.iconCircle}>!</div>
+
+          <h1 className={styles.title}>Payment Failed</h1>
+
+          <p className={styles.description}>
+            Something went wrong while creating your payment.
+          </p>
+
+          <button
+            className={styles.secondaryButton}
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h1>Payment</h1>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <div className={styles.paymentIcon}>
+          <span>✓</span>
+        </div>
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: "10px",
-          padding: "20px",
-          maxWidth: "500px",
-        }}
-      >
-        <p>
-          <strong>Payment ID:</strong>
+        <h1 className={styles.title}>Complete Your Payment</h1>
+
+        <p className={styles.description}>
+          Your order is ready. Complete the payment securely through Xendit.
         </p>
 
-        <p>{payment.paymentId}</p>
+        <div className={styles.amountBox}>
+          <span className={styles.amountLabel}>Total Amount</span>
+          <span className={styles.amount}>
+            {formatRupiah(payment.amount)}
+          </span>
+        </div>
 
-        <p>
-          <strong>Amount:</strong>
-        </p>
+        <div className={styles.details}>
+          <div className={styles.detailRow}>
+            <span>Payment ID</span>
+            <span>{payment.paymentId}</span>
+          </div>
 
-        <p>{formatRupiah(payment.amount)}</p>
-
-        <p>
-          <strong>Status:</strong>
-        </p>
-
-        <p>{payment.status}</p>
+          <div className={styles.detailRow}>
+            <span>Status</span>
+            <span className={styles.status}>{payment.status}</span>
+          </div>
+        </div>
 
         <button
-        onClick={() => {
+          className={styles.payButton}
+          onClick={() => {
             window.location.href = paymentLinkUrl;
-        }}
-        disabled={!paymentLinkUrl}
+          }}
+          disabled={!paymentLinkUrl}
         >
-        Pay Now with Xendit
+          Pay Now with Xendit
+          <span>→</span>
         </button>
+
+        <p className={styles.secureText}>
+          Secure payment powered by Xendit
+        </p>
       </div>
     </div>
   );

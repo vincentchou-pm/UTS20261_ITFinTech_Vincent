@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f7f7f8;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 460px;
+  background: #ffffff;
+  border: 1px solid #e8e8eb;
+  border-radius: 24px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* Payment Icon */
+
+.paymentIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f0edff;
+  color: #785bf5;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.paymentIcon span {
+  transform: translateY(-1px);
+}
+
+/* Error Icon */
+
+.iconCircle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f5f5f5;
+  color: #222;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* Typography */
+
+.title {
+  margin: 0;
+  color: #111111;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.description {
+  margin: 12px auto 28px;
+  max-width: 360px;
+  color: #77777f;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Amount */
+
+.amountBox {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #f8f7ff;
+  border: 1px solid #ebe8ff;
+  border-radius: 16px;
+}
+
+.amountLabel {
+  display: block;
+  margin-bottom: 6px;
+  color: #77777f;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.amount {
+  display: block;
+  color: #111111;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Details */
+
+.details {
+  margin-bottom: 24px;
+  padding: 4px 0;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eeeeef;
+  text-align: left;
+  font-size: 13px;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailRow > span:first-child {
+  color: #88888f;
+}
+
+.detailRow > span:last-child {
+  max-width: 230px;
+  overflow: hidden;
+  color: #222222;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status {
+  text-transform: capitalize;
+}
+
+/* Pay Button */
+
+.payButton {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 13px;
+  background: #111111;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.payButton:hover:not(:disabled) {
+  background: #785bf5;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(120, 91, 245, 0.22);
+}
+
+.payButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.payButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.payButton span {
+  font-size: 18px;
+}
+
+/* Secondary Button */
+
+.secondaryButton {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #dedee2;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #222222;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.secondaryButton:hover {
+  border-color: #785bf5;
+  color: #785bf5;
+}
+
+/* Secure Text */
+
+.secureText {
+  margin: 18px 0 0;
+  color: #9999a1;
+  font-size: 11px;
+}
+
+/* Loading */
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 24px;
+  border: 3px solid #e7e4ff;
+  border-top-color: #785bf5;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 500px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .card {
+    padding: 30px 22px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 23px;
+  }
+
+  .amount {
+    font-size: 22px;
+  }
+
+  .detailRow {
+    font-size: 12px;
+  }
+}

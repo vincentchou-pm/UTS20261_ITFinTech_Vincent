@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import styles from "../styles/PaymentSuccess.module.css";
 
 export default function PaymentSuccess() {
   const [status, setStatus] = useState("CHECKING");
@@ -33,7 +34,6 @@ export default function PaymentSuccess() {
 
         setStatus(data.status);
 
-        // Kalau sudah LUNAS, berhenti polling
         if (data.status === "LUNAS") {
           return true;
         }
@@ -68,100 +68,116 @@ export default function PaymentSuccess() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "40px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "500px",
-          width: "100%",
-          textAlign: "center",
-        }}
-      >
+    <div className={styles.page}>
+      <div className={styles.card}>
+
+        {/* Checking */}
         {status === "CHECKING" && (
           <>
-            <h1>Checking Payment...</h1>
+            <div className={styles.spinner}></div>
 
-            <p>
+            <h1 className={styles.title}>
+              Checking Payment...
+            </h1>
+
+            <p className={styles.description}>
               Please wait while we verify your payment.
             </p>
           </>
         )}
 
+        {/* Success */}
         {status === "LUNAS" && (
           <>
-            <h1>Payment Successful!</h1>
+            <div className={`${styles.icon} ${styles.successIcon}`}>
+              ✓
+            </div>
 
-            <h2>Status: LUNAS</h2>
+            <h1 className={styles.title}>
+              Payment Successful!
+            </h1>
 
-            <p>
+            <p className={styles.description}>
               Your payment has been successfully completed.
+              Thank you for your purchase!
             </p>
 
-            <p>
-              Checkout ID:
-              <br />
-              {checkoutId}
-            </p>
+            <div className={styles.statusBadge}>
+              <span className={styles.statusDot}></span>
+              Payment Completed
+            </div>
+
+            <div className={styles.checkoutBox}>
+              <span className={styles.checkoutLabel}>
+                Checkout ID
+              </span>
+
+              <span className={styles.checkoutId}>
+                {checkoutId}
+              </span>
+            </div>
 
             <button
+              className={styles.primaryButton}
               onClick={() => {
                 window.location.href = "/";
               }}
-              style={{
-                marginTop: "20px",
-                padding: "12px 24px",
-                cursor: "pointer",
-              }}
             >
               Back to Home
+              <span>→</span>
             </button>
           </>
         )}
 
+        {/* Pending */}
         {status === "PENDING" && (
           <>
-            <h1>Payment Processing</h1>
+            <div className={`${styles.icon} ${styles.pendingIcon}`}>
+              ...
+            </div>
 
-            <p>
+            <h1 className={styles.title}>
+              Payment Processing
+            </h1>
+
+            <p className={styles.description}>
               Your payment has been received and is still
               being processed.
             </p>
 
-            <p>
+            <div className={styles.pendingBox}>
               Please wait a moment before checking again.
-            </p>
+            </div>
           </>
         )}
 
+        {/* Error */}
         {status === "ERROR" && (
           <>
-            <h1>Something Went Wrong</h1>
+            <div className={`${styles.icon} ${styles.errorIcon}`}>
+              !
+            </div>
 
-            <p>
+            <h1 className={styles.title}>
+              Something Went Wrong
+            </h1>
+
+            <p className={styles.description}>
               We could not verify your payment status.
+              Please try again later.
             </p>
 
             <button
+              className={styles.secondaryButton}
               onClick={() => {
                 window.location.href = "/";
-              }}
-              style={{
-                marginTop: "20px",
-                padding: "12px 24px",
-                cursor: "pointer",
               }}
             >
               Back to Home
             </button>
           </>
         )}
+
       </div>
     </div>
   );
