@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export default function Payment() {
   const [checkoutId, setCheckoutId] = useState(null);
   const [payment, setPayment] = useState(null);
+  const [paymentLinkUrl, setPaymentLinkUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function Payment() {
       }
 
       setPayment(data);
+      setPaymentLinkUrl(data.paymentLinkUrl);
     } catch (error) {
       console.error(error);
     } finally {
@@ -105,11 +107,12 @@ export default function Payment() {
         <p>{payment.status}</p>
 
         <button
-          onClick={() => {
-            alert("Payment gateway will be connected here.");
-          }}
+        onClick={() => {
+            window.location.href = paymentLinkUrl;
+        }}
+        disabled={!paymentLinkUrl}
         >
-          Pay Now
+        Pay Now with Xendit
         </button>
       </div>
     </div>

@@ -37,11 +37,12 @@ export default function Home() {
       setCart([
         ...cart,
         {
-          productId: product._id,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-        },
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        category: product.category,
+        quantity: 1,
+        }
       ]);
     }
   };
