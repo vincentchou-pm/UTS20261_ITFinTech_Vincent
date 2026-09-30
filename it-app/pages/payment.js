@@ -139,16 +139,25 @@ export default function Payment() {
           </div>
         </div>
 
+        <div className={styles.buttonGroup}>
         <button
-          className={styles.payButton}
-          onClick={() => {
+            className={styles.payButton}
+            onClick={() => {
             window.location.href = paymentLinkUrl;
-          }}
-          disabled={!paymentLinkUrl}
+            }}
         >
-          Pay Now with Xendit
-          <span>→</span>
+            Pay Now with Xendit
         </button>
+
+        <button
+            className={styles.cancelButton}
+            onClick={() => {
+            window.location.href = "/payment/cancel";
+            }}
+        >
+            Cancel Payment
+        </button>
+        </div>
 
         <p className={styles.secureText}>
           Secure payment powered by Xendit

@@ -37,7 +37,7 @@ export default async function handler(req, res) {
             description: "Fresh iced coffee with milk",
             price: 18000,
             category: "Drink",
-            image: "https://images.pexels.com/photos/13759884/pexels-photo-13759884.jpeg",
+            image: "https://images.pexels.com/photos/4869290/pexels-photo-4869290.jpeg",
             stock: 30,
         },
         {
